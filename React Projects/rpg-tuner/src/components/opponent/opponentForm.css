@@ -1,0 +1,19 @@
+/* .skills-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+} */
+.opponent-form{
+    padding: 5%;
+    background: 
+        linear-gradient(180deg,
+         #AAC9E6 0%, rgba(255, 255, 255, 0) 100%),
+           linear-gradient(180deg,
+             #ADBCF1 0%, rgba(255, 255, 255, 0) 100%), #9FC0DF;
+    box-shadow: 10px 4px 4px rgba(0, 0, 0, 0.48);
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

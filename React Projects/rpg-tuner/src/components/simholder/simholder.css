@@ -1,0 +1,27 @@
+.sim-holder{
+    
+    
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, 
+    rgba(11, 177, 230, 0) 1.95%, #8FFFF8 100%), #C8BFFF;
+    border-radius: 16px;
+    
+    
+    
+}
+.sim-button{
+    width:40%;
+    align-self: center;
+}
+.stats-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.stats-left{
+    align-self: left;
+}
+.stats-right{
+    align-self: right;
+}

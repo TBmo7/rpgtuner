@@ -18,7 +18,11 @@ const SimHolder = React.memo(props =>{
         criticalHits:null,
         criticalFails:null,
         avgHit:null,
-        avgRoundsPerCombat:null
+        avgRoundsPerCombat:null,
+        charDodge: null,
+        charParry: null,
+        enemyDodge: null,
+        enemyParry: null
     })
     
     let sampleCharBlock = {
@@ -26,6 +30,7 @@ const SimHolder = React.memo(props =>{
         armor: 3,
         health: 15,
         dodge:10,
+        parry:5,
         dmg:3
     }
     
@@ -34,6 +39,7 @@ const SimHolder = React.memo(props =>{
         armor: 2,
         health:13,
         dodge:7,
+        parry:5,
         dmg:3
     }
     
@@ -48,8 +54,13 @@ const SimHolder = React.memo(props =>{
         let hits = 0;
         let attacks = 0;
         let misses = 0;
+        let chardmgsoak = 0;
         let maxCharHealth = charBlock.health
         let maxOppHealth = opponentBlock.health
+        let enemydodge = 0;
+        let enemyparry = 0;
+        let chardodge = 0;
+        let charparry = 0;
         /**
          * Need to keep track of both health pools,
          * A round will be an attack roll, against dodge
@@ -67,13 +78,49 @@ const SimHolder = React.memo(props =>{
             console.log("OPP HP", maxOppHealth)
         while (maxOppHealth > 0 && maxCharHealth > 0){
                 rounds ++;
-            if (charBlock.meleeStrike > Math.floor(Math.random()*10)){
+                let charatkdamage = 0;
+                let enemyatkdamage = 0;
+            if (charBlock.meleeStrike >= Math.floor(Math.random()*100)){
                 console.log("COMBAT RAN")
                 dicerolls ++;
                 hits ++;
                 attacks ++;
-                maxOppHealth -= charBlock.meleeStrike - opponentBlock.armor;
-                damage += charBlock.meleeStrike;
+                if (opponentBlock.dodge > opponentBlock.parry){
+                    //Check if dodge
+                    if(opponentBlock.dodge >= Math.floor(Math.random()*100)){
+                        //they dodge
+                        enemydodge ++;
+                    }
+                    else{
+                        //we damage
+                        for(let i = 0; i<3; i++)
+                            {
+                            charatkdamage += Math.floor(Math.random()*6)
+                            }                        
+                        maxOppHealth -= charatkdamage - opponentBlock.armor;
+                        
+                        damage += charatkdamage;
+                        }
+                
+                }
+                else {
+                    //opponent parry
+                    if(opponentBlock.parry >= Math.floor(Math.random()*100)){
+                        //they parry
+                        enemyparry ++;
+                    }
+                    else{
+                        //we damage
+                        for(let i = 0; i<3; i++)
+                            {
+                            charatkdamage += Math.floor(Math.random()*6)
+                            }                        
+                        maxOppHealth -= charatkdamage - opponentBlock.armor;
+                        damage += charatkdamage;
+                        
+                        }
+                }
+                
                 
             }
             else {
@@ -81,9 +128,35 @@ const SimHolder = React.memo(props =>{
             }
 
 
-            if(opponentBlock.meleeStrike > Math.floor(Math.random()*10)){
+            if(opponentBlock.meleeStrike > Math.floor(Math.random()*100)){
                 dicerolls ++;
-                maxCharHealth -= opponentBlock.meleeStrike - charBlock.armor
+                //hits, roll to dodge/parry
+                if(charBlock.parry > charBlock.dodge){
+                    //we attempt parry
+                    if(charBlock.parry >= Math.floor(Math.random()*100)){
+                        charparry ++
+                    }
+                    else{
+                    //they damage
+                    for(let i = 0; i<3; i++){
+                        enemyatkdamage += Math.floor(Math.random()*6)
+                        maxCharHealth -= enemyatkdamage - charBlock.armor
+                    }
+                }
+                }
+                else{
+                    //we attempt dodge
+                    if(charBlock.dodge >= Math.floor(Math.random()*100)){
+                        chardodge ++;
+                    }
+                    else{
+                        for(let i = 0; i<3; i++){
+                            enemyatkdamage += Math.floor(Math.random()*6)
+                            maxCharHealth -= enemyatkdamage - charBlock.armor
+                        }
+                    }
+                }
+                
             }
 
         }
@@ -101,7 +174,11 @@ const SimHolder = React.memo(props =>{
             diceRolls:dicerolls,
             avgDmgPerRound: (damage/rounds),
             avgHit: (hits/rounds) * 100,
-            avgRoundsPerCombat: rounds
+            avgRoundsPerCombat: rounds,
+            charDodge: chardodge,
+            charParry: charparry,
+            enemyDodge: enemydodge,
+            enemyParry: enemyparry
         }))
 
         
@@ -136,6 +213,12 @@ return(
                      <li>
                          Avg Damage Soaked per round:
                      </li>
+                     <li>
+                         Character Dodges : {results.charDodge}
+                     </li>
+                     <li>
+                         Character Parries : {results. charParry}
+                     </li>
                  </ul>
                  </div>
              <div className = "stats-right">
@@ -151,6 +234,12 @@ return(
                     </li>
                     <li>
                         Avg rounds per combat : {results.avgRoundsPerCombat}
+                    </li>
+                    <li>
+                        Enemy Dodges : {results.enemyDodge}
+                    </li>
+                    <li>
+                        Enemy Parries : {results.enemyParry}
                     </li>
                  </ul>
                  </div>   

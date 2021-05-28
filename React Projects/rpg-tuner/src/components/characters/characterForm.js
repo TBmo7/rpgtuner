@@ -1,9 +1,13 @@
 import React, {useState,useEffect} from 'react';
-import {connect} from 'react-redux'
-import {fetchData} from '../actions/app'
+import {connect,useDispatch} from 'react-redux'
+
+import {fetchData, FETCH_DATA} from '../actions/app'
+import { rootReducer } from '../reducers/app';
 import './characterForm.css'
 
 const CharacterForm = React.memo(props =>{
+    const dispatch = useDispatch()
+    
     const [enteredStats, setEnteredStats] = useState({
             title: props.charInfo.title ,
             race: props.charInfo.race,
@@ -56,6 +60,9 @@ const CharacterForm = React.memo(props =>{
         
     }
     
+    
+    
+
     useEffect(()=>{
         setEnteredPhysicalStats(state=>({
             ...state,
@@ -81,10 +88,17 @@ const CharacterForm = React.memo(props =>{
             persuasion: parseInt(enteredStats.presence) + parseInt(enteredStats.willpower) ,
             intimidation: parseInt(enteredStats.presence) + parseInt(enteredStats.strength)
         }))
+        //WORKING RIGHT HERE 5/2/2021
+        //const store = props.charInfo
+        
+        
+        
     },[enteredStats])
 
-    //console.log("PROPS " + props)
-    console.log("Char info Props"  + props.charInfo)
+    
+
+    console.log("PROPS " + props)
+    //console.log("Char info Props"  + props.charInfo.title)
 
     //console.log(enteredPhysicalStats)
     return(
@@ -353,6 +367,7 @@ const CharacterForm = React.memo(props =>{
 const mapStateToProps = state => {
     return {
         charInfo: state.charInfo,
+        testPerception : state.enteredInnateSkills,
         isLoading: state.isLoading,
         error: state.error,
         showInfo: state.showInfo

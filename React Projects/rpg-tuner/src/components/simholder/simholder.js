@@ -1,14 +1,14 @@
 import React, {useState,useEffect} from 'react';
 import './simholder.css'
+import {connect} from 'react-redux'
+import {fetchData} from '../actions/app'
+import {useSelector, useDispatch} from "react-redux"
 
 
 
 
 
-
-
-
-const SimHolder = React.memo(props =>{
+const SimHolder = React.memo(charInfo =>{
 
     const [results, setResults] = useState({
         charVictories: null,
@@ -25,6 +25,8 @@ const SimHolder = React.memo(props =>{
         enemyParry: null
     })
     
+    const tester = useSelector(state => state.charInfo)
+    console.log(tester)
     let sampleCharBlock = {
         meleeStrike: 5,
         armor: 3,
@@ -44,7 +46,9 @@ const SimHolder = React.memo(props =>{
     }
     
     
-    console.log(results)
+    //console.log(results)
+    
+    
     const RunSim = (charBlock,opponentBlock) => {
         let victories = 0;
         let dicerolls = 0;
@@ -250,4 +254,15 @@ return(
 )
 })
 
-export default SimHolder
+const mapStateToProps = state => {
+    return {
+        
+        
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    {fetchData}
+)(SimHolder)
+

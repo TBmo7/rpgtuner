@@ -1,4 +1,4 @@
-import {FETCH_DATA, DATA_SUCCESS, DATA_ERROR} from "../actions/app"
+import {FETCH_DATA, DATA_SUCCESS, DATA_ERROR, DATA_UPDATE} from "../actions/app"
 
 const initialCharState = {
 
@@ -67,8 +67,21 @@ export const rootReducer = (state = {initialCharState, initialStatsAndSkillsStat
                 ...state.initialCharState,
                 isLoading:false
             }
+        case DATA_UPDATE:
+            console.log("DATA UPDATE")
+            return{
+                state,
+                error:"This is a test of the REducer system, this is only a test"
+
+
+            }
         default:
             return state.initialCharState
     }   
 
 }
+
+/**
+ * Able to hand out this state, need a way to update this state
+ * 
+ */
